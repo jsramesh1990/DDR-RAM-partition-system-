@@ -1,0 +1,26 @@
+ddr-ram-partition-system/
+├── README.md
+├── CMakeLists.txt
+├── .gitignore
+├── src/
+│   ├── main.c
+│   ├── ddr_memory.h
+│   ├── ddr_memory.c
+│   ├── gaming_partition.h
+│   ├── gaming_partition.c
+│   ├── rw_partition.h
+│   ├── rw_partition.c
+│   ├── userspace_app.h
+│   ├── userspace_app.c
+│   └── startup_code.h
+├── include/
+│   └── config.h
+├── tests/
+│   ├── test_main.c
+│   └── test_runner.c
+├── examples/
+│   ├── example_gaming.c
+│   ├── example_rw.c
+│   └── example_userspace.c
+└── scripts/
+    └── build_and_run.sh

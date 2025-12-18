@@ -1,0 +1,520 @@
+I'll create a comprehensive working flow diagram for the DDR RAM Partition System. Here are multiple representations from different perspectives:
+
+## 1. **High-Level System Flow Diagram**
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    DDR RAM PARTITION SYSTEM                  │
+└─────────────────────────────────────────────────────────────┘
+                                │
+┌─────────────────────────────────────────────────────────────┐
+│                      STARTUP SEQUENCE                        │
+└─────────────────────────────────────────────────────────────┘
+                                │
+                    ┌───────────┴───────────┐
+                    ▼                       ▼
+           ┌─────────────────┐     ┌─────────────────┐
+           │  SYSTEM INIT    │     │  BOOTSTRAP      │
+           │  - CPU Init     │     │  - Loader       │
+           │  - Clocks       │     │  - Verification │
+           │  - Peripherals  │     │  - Jump to App  │
+           └─────────────────┘     └─────────────────┘
+                    │                       │
+                    └───────────┬───────────┘
+                                ▼
+                     ┌─────────────────────┐
+                     │   MEMORY INIT       │
+                     │  - DDR Allocation   │
+                     │  - Partition Setup  │
+                     │  - Protection Config│
+                     └─────────────────────┘
+                                │
+                    ┌───────────┴───────────┐
+                    ▼                       ▼
+           ┌─────────────────┐     ┌─────────────────┐
+           │ INTERRUPTS ENABLE│     │PARTITIONS READY │
+           │  - IRQ Config   │     │  - Gaming       │
+           │  - Handlers     │     │  - Read/Write   │
+           │  - Global Enable│     │  - User Space   │
+           └─────────────────┘     └─────────────────┘
+                                │
+                                ▼
+                     ┌─────────────────────┐
+                     │   SYSTEM READY      │
+                     │  - All Partitions   │
+                     │  - Applications     │
+                     │  - Memory Protected │
+                     └─────────────────────┘
+```
+
+## 2. **Memory Partition Flow Diagram**
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    768 MB DDR MEMORY                         │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │              PARTITION 1: GAMING (256MB)            │   │
+│  ├─────────────────────────────────────────────────────┤   │
+│  │  Start: 0x00000000                                 │   │
+│  │  End:   0x0FFFFFFF                                 │   │
+│  │  Protection: READ/WRITE/EXECUTE                    │   │
+│  ├─────────────────────────────────────────────────────┤   │
+│  │  Game State ┌─────┐  Textures ┌─────┐  Objects    │   │
+│  │  ┌─────┐    │     │  ┌─────┐  │     │  ┌─────┐    │   │
+│  │  │     ├───►│     │  │     ├─►│     │  │     │    │   │
+│  │  └─────┘    └─────┘  └─────┘  └─────┘  └─────┘    │   │
+│  │  Physics Engine    Render Buffer    Audio Data     │   │
+│  └─────────────────────────────────────────────────────┘   │
+│                                                             │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │           PARTITION 2: READ/WRITE (256MB)           │   │
+│  ├─────────────────────────────────────────────────────┤   │
+│  │  Start: 0x10000000                                 │   │
+│  │  End:   0x1FFFFFFF                                 │   │
+│  │  Protection: READ/WRITE                            │   │
+│  ├─────────────────────────────────────────────────────┤   │
+│  │  Data Blocks ┌─────┐  Cache ┌─────┐  Buffers      │   │
+│  │  ┌─────┐     │     │  ┌─────┐     │  ┌─────┐     │   │
+│  │  │     ├────►│     │  │     ├────►│     │  │     │   │
+│  │  └─────┘     └─────┘  └─────┘     └─────┘  │     │   │
+│  │  File System    Logs       Temporary Data   │     │   │
+│  └─────────────────────────────────────────────────────┘   │
+│                                                             │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │           PARTITION 3: USER SPACE (256MB)           │   │
+│  ├─────────────────────────────────────────────────────┤   │
+│  │  Start: 0x20000000                                 │   │
+│  │  End:   0x2FFFFFFF                                 │   │
+│  │  Protection: READ/WRITE/EXECUTE                    │   │
+│  ├─────────────────────────────────────────────────────┤   │
+│  │  Applications ┌─────┐  Libraries ┌─────┐  Stack   │   │
+│  │  ┌─────┐      │     │  ┌─────┐   │     │  ┌─────┐ │   │
+│  │  │     ├─────►│     │  │     ├──►│     │  │     │ │   │
+│  │  └─────┘      └─────┘  └─────┘   └─────┘  └─────┘ │   │
+│  │  GUI Apps    System Services    User Data          │   │
+│  └─────────────────────────────────────────────────────┘   │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+## 3. **Application Execution Flow**
+
+```mermaid
+graph TD
+    A[System Power On] --> B[Boot ROM Execution]
+    B --> C[Startup Code Execution]
+    C --> D{Memory Initialization}
+    
+    D --> E[DDR RAM Detection]
+    E --> F[Allocate 768MB Memory]
+    F --> G[Create Three Partitions]
+    
+    G --> H[Partition 1: Gaming]
+    G --> I[Partition 2: Read/Write]
+    G --> J[Partition 3: User Space]
+    
+    H --> K[Initialize Gaming Engine]
+    I --> L[Initialize R/W Manager]
+    J --> M[Initialize User Space]
+    
+    K --> N[Load Game Textures]
+    L --> O[Setup Data Blocks]
+    M --> P[Load Applications]
+    
+    N --> Q[Game Main Loop]
+    O --> R[R/W Operations]
+    P --> S[User App Execution]
+    
+    Q --> T{Frame Complete?}
+    T -->|Yes| U[Swap Buffers]
+    T -->|No| Q
+    
+    R --> V{Operation Complete?}
+    V -->|Yes| W[Update Metrics]
+    V -->|No| R
+    
+    S --> X{App Running?}
+    X -->|Yes| Y[Process App Events]
+    X -->|No| Z[Cleanup App]
+    
+    U --> Q
+    W --> R
+    Y --> S
+    Z --> AA[Free Resources]
+```
+
+## 4. **Memory Allocation Flow Diagram**
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    MEMORY ALLOCATION FLOW                    │
+└─────────────────────────────────────────────────────────────┘
+                                │
+                     ┌─────────────────────┐
+                     │  Allocation Request │
+                     │  - Size            │
+                     │  - Partition Type  │
+                     │  - Priority        │
+                     └─────────────────────┘
+                                │
+                     ┌──────────┴──────────┐
+                     ▼                     ▼
+           ┌───────────────────┐ ┌───────────────────┐
+           │   GAMING REQUEST  │ │   USER REQUEST    │
+           └───────────────────┘ └───────────────────┘
+                     │                     │
+           ┌─────────┴─────────┐ ┌─────────┴─────────┐
+           ▼                   ▼ ▼                   ▼
+    ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+    │ Check Size  │     │ Check Prot. │     │ Check Frag. │
+    │ Constraints │     │ Constraints │     │ Constraints │
+    └─────────────┘     └─────────────┘     └─────────────┘
+           │                   │                   │
+    ┌──────┴──────┐     ┌──────┴──────┐     ┌──────┴──────┐
+    ▼             ▼     ▼             ▼     ▼             ▼
+[Size OK?] [Size Fail] [Prot OK?] [Prot Fail] [Frag OK?] [Frag Fail]
+    │             │     │             │     │             │
+    ▼             │     ▼             │     ▼             │
+ Allocate         │  Allocate         │  Allocate         │
+ Memory           │  Memory           │  Memory           │
+    │             │     │             │     │             │
+    ▼             ▼     ▼             ▼     ▼             ▼
+┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐
+│ Update  │ │ Return  │ │ Update  │ │ Return  │ │ Update  │ │ Return  │
+│ Gaming  │ │ Error   │ │ R/W     │ │ Error   │ │ User    │ │ Error   │
+│ Stats   │ │ MEM_FULL│ │ Stats   │ │PROTECTED│ │ Stats   │ │ INVALID │
+└─────────┘ └─────────┘ └─────────┘ └─────────┘ └─────────┘ └─────────┘
+      │             │         │             │         │             │
+      └─────────────┴─────────┴─────────────┴─────────┴─────────────┘
+                                │
+                     ┌─────────────────────┐
+                     │  Return Pointer to  │
+                     │  Allocated Memory   │
+                     │  or Error Code      │
+                     └─────────────────────┘
+```
+
+## 5. **Inter-Partition Communication Flow**
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│               INTER-PARTITION COMMUNICATION                  │
+└─────────────────────────────────────────────────────────────┘
+                                │
+                ┌─────────────────────────────┐
+                │  Shared Memory Controller   │
+                │  - Mediates Access          │
+                │  - Enforces Protection      │
+                │  - Handles Synchronization  │
+                └─────────────────────────────┘
+                                │
+        ┌───────────────────────┼───────────────────────┐
+        │                       │                       │
+        ▼                       ▼                       ▼
+┌───────────────┐       ┌───────────────┐       ┌───────────────┐
+│   GAMING      │       │   READ/WRITE  │       │   USER SPACE  │
+│   PARTITION   │       │   PARTITION   │       │   PARTITION   │
+└───────────────┘       └───────────────┘       └───────────────┘
+        │                       │                       │
+        ▼                       ▼                       ▼
+┌───────────────┐       ┌───────────────┐       ┌───────────────┐
+│ Game → Save   │       │ R/W → Load    │       │ User → Game   │
+│ High Score    │       │ Game Data     │       │ Configuration │
+└───────────────┘       └───────────────┘       └───────────────┘
+        │                       │                       │
+        ▼                       ▼                       ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    COMMUNICATION PROTOCOL                    │
+├─────────────────────────────────────────────────────────────┤
+│ 1. Request Access      → 2. Validate Request                │
+│ 3. Check Protection    → 4. Copy Data                       │
+│ 5. Update Status       → 6. Return Result                   │
+└─────────────────────────────────────────────────────────────┘
+                                │
+                ┌─────────────────────────────┐
+                │    Synchronization Points   │
+                ├─────────────────────────────┤
+                │  • Mutex for Write Access   │
+                │  • Semaphore for Readers    │
+                │  • Barriers for Bulk Ops    │
+                │  • Events for Notifications │
+                └─────────────────────────────┘
+```
+
+## 6. **Error Handling and Recovery Flow**
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                 ERROR HANDLING AND RECOVERY                 │
+└─────────────────────────────────────────────────────────────┘
+                                │
+                     ┌─────────────────────┐
+                     │    Error Detected   │
+                     │  - Memory Fault     │
+                     │  - Protection Viol. │
+                     │  - Allocation Fail  │
+                     └─────────────────────┘
+                                │
+                     ┌──────────┴──────────┐
+                     ▼                     ▼
+           ┌───────────────────┐ ┌───────────────────┐
+           │   RECOVERABLE     │ │   FATAL ERROR     │
+           │     ERRORS        │ │                   │
+           └───────────────────┘ └───────────────────┘
+                     │                     │
+           ┌─────────┴─────────┐           │
+           ▼                   ▼           ▼
+    ┌─────────────┐     ┌─────────────┐ ┌─────────────┐
+    │ Memory Full │     │ Invalid Addr│ │System Crash │
+    └─────────────┘     └─────────────┘ └─────────────┘
+           │                   │               │
+    ┌──────┴──────┐     ┌──────┴──────┐       │
+    ▼             ▼     ▼             ▼       │
+┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐     │
+│Attempt  │ │ Defrag  │ │Log Error│ │Terminate│     │
+│Cleanup  │ │ Memory  │ │& Return │ │ Process │     │
+└─────────┘ └─────────┘ └─────────┘ └─────────┘     │
+       │          │          │            │         │
+       └──────────┴──────────┴────────────┼─────────┘
+                                │         │
+                     ┌──────────┴──────────┐
+                     ▼                     ▼
+           ┌───────────────────┐ ┌───────────────────┐
+           │  Continue Normal  │ │  System Reboot    │
+           │    Operation      │ │  or Shutdown      │
+           └───────────────────┘ └───────────────────┘
+```
+
+## 7. **Complete System Architecture Diagram**
+
+```mermaid
+graph TB
+    subgraph "Hardware Layer"
+        CPU[CPU Core]
+        DDR[DDR RAM Controller]
+        BUS[System Bus]
+    end
+    
+    subgraph "Firmware Layer"
+        BOOT[Bootloader]
+        STARTUP[Startup Code]
+        MMU[Memory Management Unit]
+    end
+    
+    subgraph "Memory Layer"
+        MEM[DDR RAM 768MB]
+        
+        subgraph "Partition 1: Gaming (256MB)"
+            G1[Game State]
+            G2[Textures]
+            G3[Objects]
+            G4[Physics Data]
+        end
+        
+        subgraph "Partition 2: Read/Write (256MB)"
+            R1[Data Blocks]
+            R2[Cache]
+            R3[Buffers]
+            R4[File System]
+        end
+        
+        subgraph "Partition 3: User Space (256MB)"
+            U1[Applications]
+            U2[Libraries]
+            U3[Stack/Heap]
+            U4[User Data]
+        end
+    end
+    
+    subgraph "Application Layer"
+        GAME[Gaming Engine]
+        RW[Read/Write Manager]
+        USER[User Space Manager]
+        APP1[Application 1]
+        APP2[Application 2]
+        APP3[Application 3]
+    end
+    
+    subgraph "Interface Layer"
+        API[System APIs]
+        DRV[Device Drivers]
+        SYS[System Calls]
+    end
+    
+    CPU --> BOOT
+    BOOT --> STARTUP
+    STARTUP --> MMU
+    MMU --> MEM
+    
+    GAME --> G1 & G2 & G3 & G4
+    RW --> R1 & R2 & R3 & R4
+    USER --> U1 & U2 & U3 & U4
+    
+    APP1 & APP2 & APP3 --> USER
+    GAME & RW & USER --> API
+    API --> SYS
+    SYS --> DRV
+    DRV --> BUS
+    BUS --> CPU & DDR
+    
+    DDR --> MEM
+    
+    classDef hardware fill:#e1f5fe
+    classDef firmware fill:#f3e5f5
+    classDef memory fill:#e8f5e8
+    classDef application fill:#fff3e0
+    classDef interface fill:#ffebee
+    
+    class CPU,DDR,BUS hardware
+    class BOOT,STARTUP,MMU firmware
+    class MEM,G1,G2,G3,G4,R1,R2,R3,R4,U1,U2,U3,U4 memory
+    class GAME,RW,USER,APP1,APP2,APP3 application
+    class API,DRV,SYS interface
+```
+
+## 8. **Execution Timeline Diagram**
+
+```
+TIMELINE: System Startup to Application Execution
+─────────────────────────────────────────────────────────────────────
+Time  │ Process
+──────┼─────────────────────────────────────────────────────────────
+ t0   │ [POWER ON]
+      │ └─ Boot ROM executes
+      │    ├─ Hardware initialization
+      │    └─ Jump to startup code
+──────┼─────────────────────────────────────────────────────────────
+ t1   │ [STARTUP CODE]
+      │ ├─ System initialization
+      │ ├─ DDR memory detection
+      │ ├─ Memory controller setup
+      │ └─ Partition table creation
+──────┼─────────────────────────────────────────────────────────────
+ t2   │ [PARTITION CREATION]
+      │ ├─ Gaming partition: 0x00000000-0x0FFFFFFF
+      │ ├─ R/W partition: 0x10000000-0x1FFFFFFF
+      │ └─ User space: 0x20000000-0x2FFFFFFF
+──────┼─────────────────────────────────────────────────────────────
+ t3   │ [APPLICATION INITIALIZATION]
+      │ ├─ Gaming: Load textures, init physics
+      │ ├─ R/W: Setup data structures, buffers
+      │ └─ User: Load apps, setup environment
+──────┼─────────────────────────────────────────────────────────────
+ t4   │ [MAIN EXECUTION LOOP]
+      │ ├─ Gaming: Process input → Update → Render (60 FPS)
+      │ ├─ R/W: Read/Write operations, data management
+      │ └─ User: App scheduling, event handling
+──────┼─────────────────────────────────────────────────────────────
+ t5   │ [INTER-PARTITION COMMUNICATION]
+      │ ├─ Game saves score → R/W partition
+      │ ├─ User config → Game partition
+      │ └─ R/W data → User applications
+──────┼─────────────────────────────────────────────────────────────
+ t6   │ [SYSTEM MONITORING]
+      │ ├─ Memory usage tracking
+      │ ├─ Performance metrics
+      │ └─ Error detection/recovery
+──────┼─────────────────────────────────────────────────────────────
+ t7   │ [SHUTDOWN SEQUENCE]
+      │ ├─ Save application state
+      │ ├─ Flush buffers
+      │ ├─ Free memory
+      │ └─ Power down
+─────────────────────────────────────────────────────────────────────
+```
+
+## 9. **Data Flow Between Components**
+
+```
+┌─────────────┐    Game Data    ┌─────────────┐
+│             │─────────────────►│             │
+│  Gaming     │                 │  Read/Write │
+│  Engine     │◄────────────────┤  Partition  │
+│             │   Load/Save     │             │
+└─────────────┘                 └─────────────┘
+        │                             │
+        │ User Settings               │ App Data
+        ▼                             ▼
+┌─────────────┐    App Requests ┌─────────────┐
+│             │─────────────────►│             │
+│ User Space  │                 │  System     │
+│ Applications│◄────────────────┤  Resources  │
+│             │   Memory Alloc  │             │
+└─────────────┘                 └─────────────┘
+        │                             │
+        └──────────────┬──────────────┘
+                       │
+                       ▼
+              ┌─────────────────┐
+              │   Memory        │
+              │   Controller    │
+              │                 │
+              │  • Arbitration  │
+              │  • Protection   │
+              │  • Scheduling   │
+              └─────────────────┘
+                       │
+                       ▼
+              ┌─────────────────┐
+              │   DDR RAM       │
+              │   768 MB        │
+              └─────────────────┘
+```
+
+## 10. **Build and Test Flow**
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                  DEVELOPMENT WORKFLOW                       │
+└─────────────────────────────────────────────────────────────┘
+                                │
+                     ┌─────────────────────┐
+                     │    Source Code      │
+                     │  • main.c          │
+                     │  • ddr_memory.c    │
+                     │  • partitions      │
+                     └─────────────────────┘
+                                │
+                     ┌─────────────────────┐
+                     │     Compilation     │
+                     │  • gcc/CMake       │
+                     │  • Object files    │
+                     │  • Linking         │
+                     └─────────────────────┘
+                                │
+                    ┌───────────┴───────────┐
+                    ▼                       ▼
+           ┌─────────────────┐     ┌─────────────────┐
+           │  Test Suite     │     │  Main Executable│
+           │  • Unit tests   │     │  • ddr_ram_system│
+           │  • Integration  │     │                 │
+           └─────────────────┘     └─────────────────┘
+                    │                       │
+           ┌────────┴────────┐     ┌────────┴────────┐
+           ▼                 ▼     ▼                 ▼
+    ┌─────────────┐   ┌─────────────┐   ┌─────────────┐
+    │ Test Runner │   │ Test Reports│   │System Output│   │Memory Dumps│
+    │ Execution   │   │ Generation  │   │ & Logs      │   │ & Analysis │
+    └─────────────┘   └─────────────┘   └─────────────┘   └─────────────┘
+           │                 │               │               │
+           └─────────────────┴───────────────┴───────────────┘
+                                │
+                     ┌─────────────────────┐
+                     │  Validation &       │
+                     │  Verification       │
+                     │  • Memory checks   │
+                     │  • Performance     │
+                     │  • Integration     │
+                     └─────────────────────┘
+                                │
+                     ┌─────────────────────┐
+                     │  Final Deployment   │
+                     │  • GitHub release  │
+                     │  • Documentation   │
+                     │  • Examples        │
+                     └─────────────────────┘
+```
+
+These flow diagrams provide a comprehensive view of how the DDR RAM Partition System works from different perspectives. You can use these in your GitHub README or documentation to help users understand the system architecture and workflow.
