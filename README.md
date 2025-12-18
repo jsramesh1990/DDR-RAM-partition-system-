@@ -21,7 +21,7 @@
 - [License](#license)
 - [Contact](#contact)
 
-## 🎯 Overview
+##  Overview
 
 A sophisticated simulated DDR RAM memory management system with three distinct partitions for different application domains. This project demonstrates memory management, partition isolation, and application-specific memory optimization techniques.
 
